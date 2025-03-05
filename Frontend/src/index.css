@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background: black;  /* Sets the background color of the page to black */
+    color: white;        /* Sets the text color of the page to white */
+}
+
+input,
+textarea {
+    color: black;        /* Sets the text color of input and textarea elements to black */
+}
+
+select option {
+    color: black;        /* Sets the text color of select options to black */
+}

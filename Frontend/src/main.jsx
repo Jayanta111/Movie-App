@@ -4,8 +4,7 @@ import "./index.css";
 import App from "./App.jsx";
 import store from "./redux/store.js";
 import { Provider } from "react-redux";
-import { Route, RouterProvider, createRoutesFromElements } from "react-router";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 
 // Importing Pages
 import Home from "./pages/Home.jsx";
@@ -13,21 +12,53 @@ import Login from "./pages/auth/Login.jsx";
 import Register from "./pages/auth/Register.jsx";
 import PrivateRoute from "./pages/auth/PrivateRoute.jsx";
 import Profile from "./pages/user/Profile.jsx";
+import AdminRoute from "./pages/Admin/AdminRoutes.jsx";
+import GenreList from "./pages/Admin/GenreList.jsx";
 
 // Define Routes
 const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<App />}>
-      <Route index element={<Home />} />
-      <Route path="login" element={<Login />} />
-      <Route path="register" element={<Register />} />
+  [
+    {
+      path: "/",
+      element: <App />,
+      children: [
+        {
+          index: true,
+          element: <Home />,
+        },
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "register",
+          element: <Register />,
+        },
 
-      {/* PrivateRoute Wrapper for Protected Routes */}
-<Route path='' element={<PrivateRoute/>}>
-        <Route path="/profile" element={<Profile />} />
-      </Route>
-    </Route>
-  )
+        // PrivateRoute Wrapper for Protected Routes
+        {
+          element: <PrivateRoute />,
+          children: [
+            {
+              path: "profile",
+              element: <Profile />,
+            },
+          ],
+        },
+
+        // AdminRoute Wrapper for Admin Pages
+        {
+          element: <AdminRoute />,
+          children: [
+            {
+              path: "admin/movies/genre",
+              element: <GenreList />,
+            },
+          ],
+        },
+      ],
+    },
+  ]
 );
 
 // Render App

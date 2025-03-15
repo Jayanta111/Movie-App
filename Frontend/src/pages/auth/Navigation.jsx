@@ -103,7 +103,7 @@ const Navigation = () => {
 
     {userInfo.isAdmin && (
       <li>
-        <Link to="/admin/movies/dashboard" className="block px-4 py-2 hover:bg-gray-100 transition-colors">
+        <Link to="/admin/movies/genre" className="block px-4 py-2 hover:bg-gray-100 transition-colors">
           Admin Dashboard
         </Link>
       </li>

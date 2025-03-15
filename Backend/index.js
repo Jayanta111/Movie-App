@@ -1,5 +1,5 @@
 // Packages
-import express from "express";
+import express from 'express';
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import path from "path";
@@ -24,5 +24,6 @@ const PORT = process.env.PORT || 5000;
 // Routes
 app.use("/api/v1/users",userRoutes);
 app.use('/api/v1/genre',genreRoutes);
+
 
 app.listen(PORT, () => console.log(`Server is running on Port: ${PORT}`));

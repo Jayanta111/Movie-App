@@ -3,15 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-"scripts": {
-  "fullstack": "concurrently \"npm run Backend\" \"npm run Frontend\"",
-  "Backend": "nodemon Backend/index.js",
-  "Frontend": "cd Frontend && npm run dev"
-},
+  "scripts": {
+    "fullstack": "concurrently \"npm run Backend\" \"npm run Frontend\"",
+    "Backend": "nodemon Backend/index.js",
+    "Frontend": "cd Frontend && npm run dev"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  
   "type": "module",
   "dependencies": {
     "bcryptjs": "^3.0.2",
@@ -23,6 +22,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.10.1",
     "multer": "^1.4.5-lts.1",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "vite-plugin-node-polyfills": "^0.23.0"
   }
 }

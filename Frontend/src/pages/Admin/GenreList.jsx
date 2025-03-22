@@ -3,7 +3,7 @@ import {
   useCreateGenreMutation, 
   useUpdateGenreMutation, 
   useDeleteGenreMutation, 
-  useFetchGenresQuery 
+  useFetchGenresQuery, 
 } from "../../redux/api/genre";
 import { toast } from "react-toastify";
 import GenreForm from "../../component/GenreForm";
@@ -83,20 +83,25 @@ const GenreList = () => {
 
         {/* Genre List */}
         <div className="flex flex-wrap">
-          {genres?.map((genre) => (
-            <div key={genre._id}>
-              <button
-                className="bg-teal-500 text-white py-2 px-4 rounded-lg hover:bg-teal-600 focus:outline-none focus:ring-teal-500 focus:opacity-50"
-                onClick={() => {
-                  setModalVisible(true);
-                  setSelectedGenre(genre);
-                  setUpdatingName(genre.name);
-                }}
-              >
-                {genre.name}
-              </button>
-            </div>
-          ))}
+        {Array.isArray(genres) && genres.length > 0 ? (
+  genres.map((genre) => (
+    <div key={genre._id}>
+      <button
+        className="bg-teal-500 text-white py-2 px-4 rounded-lg hover:bg-teal-600 focus:outline-none focus:ring-teal-500 focus:opacity-50"
+        onClick={() => {
+          setModalVisible(true);
+          setSelectedGenre(genre);
+          setUpdatingName(genre.name);
+        }}
+      >
+        {genre.name}
+      </button>
+    </div>
+  ))
+) : (
+  <p className="text-gray-500">No genres found.</p>
+)}
+
         </div>
 
         {/* Update & Delete Genre Modal */}

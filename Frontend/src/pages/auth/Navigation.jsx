@@ -108,7 +108,13 @@ const Navigation = () => {
         </Link>
       </li>
     )}
-
+  {userInfo.isAdmin && (
+      <li>
+        <Link to="/admin/movies/create-movie" className="block px-4 py-2 hover:bg-gray-100 transition-colors">
+        Create Movie
+        </Link>
+      </li>
+    )}
     <hr className="my-2 border-gray-300" />
 
     <li>

@@ -75,20 +75,11 @@ const removeGenre = asyncHandler(async (req, res) => {
 // List all Genres
 const listGenres = asyncHandler(async (req, res) => {
     try {
-        // Find all genres from the Genre collection
-        const allGenres = await Genre.find({});
-
-        // Check if genres exist in the database
-        if (allGenres.length === 0) {
-            return res.status(404).json({ message: "No genres found" });
-        }
-
-        // Respond with the list of all genres
-        res.status(200).json({ success: true, genres: allGenres });
-    } catch (error) {
-        console.error(error); // Log the error for debugging
-        res.status(500).json({ error: "Internal Server Error" });
-    }
+        const genres = await Genre.find({});
+        res.status(200).json(genres); 
+      } catch (error) {
+        res.status(500).json({ message: "Failed to fetch genres" });
+      }
 });
 //Read Genre
 const readGenre=asyncHandler(async(req,res)=>{

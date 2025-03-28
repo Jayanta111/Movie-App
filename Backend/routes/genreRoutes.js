@@ -14,7 +14,7 @@ router.route("/")
   .post(authentication, authorizeAdmin, createGenre);  // Route for creating a genre
 
 router.route("/:id")
-  .put(authentication, authorizeAdmin, updateGenre);   // Route for updating a genre
+  .put(authentication, authorizeAdmin, updateGenre);   
 router.route("/:id").delete(authentication,authorizeAdmin,removeGenre);
 router.route('/genres').get(listGenres);
 router.route('/:id').get(readGenre);

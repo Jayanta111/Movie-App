@@ -60,7 +60,7 @@ const CreateMovie = () => {
       const movie = { ...movieData, image: imageUrl, cast: movieData.cast.split(",") };
       await createMovie(movie).unwrap();
       toast.success('Movie created successfully!');
-      navigate('/movies');
+      navigate('/admin/movies-list');
     } catch (error) {
       toast.error('Failed to create movie!');
     }
@@ -126,7 +126,7 @@ const CreateMovie = () => {
             <option>Loading genres...</option>
           ) : genres && genres.length > 0 ? (
             genres.map((genre) => (
-              <option key={genre.id} value={genre.id}>{genre.name}</option>
+              <option key={genre._id} value={genre._id}>{genre.name}</option>
             ))
           ) : (
             <option>No genres available</option>

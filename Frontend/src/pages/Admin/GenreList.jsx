@@ -10,9 +10,8 @@ import GenreForm from "../../component/GenreForm";
 import Modal from "../../component/Modal";
 
 const GenreList = () => {
-  const { data: genres = [], error, isLoading, refetch } = useFetchGenresQuery(); // ✅ Provide a default empty array
-  
-  
+  const { data: genres = [], error, isLoading, refetch } = useFetchGenresQuery();
+
   const [name, setName] = useState('');
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [updatingName, setUpdatingName] = useState('');
@@ -21,6 +20,9 @@ const GenreList = () => {
   const [createGenre] = useCreateGenreMutation();
   const [updateGenre] = useUpdateGenreMutation();
   const [deleteGenre] = useDeleteGenreMutation();
+
+  // Debug: Log fetched genres
+  console.log('Fetched Genres:', genres);
 
   // Handle Create Genre
   const handleCreateGenre = async (e) => {
@@ -75,7 +77,7 @@ const GenreList = () => {
 
         {/* Display Loading & Error Messages */}
         {isLoading && <p>Loading genres...</p>}
-        {error && <p className="text-red-500">Error fetching genres</p>}
+        {error && <p className="text-red-500">Error: {error.data?.message || 'Failed to fetch genres'}</p>}
 
         {/* Create Genre Form */}
         <GenreForm value={name} setValue={setName} handleSubmit={handleCreateGenre} />
@@ -84,10 +86,10 @@ const GenreList = () => {
 
         {/* Genre List */}
         <div className="flex flex-wrap">
-        {genres && genres.length > 0 ? (
-            genres?.map((genre) => (
+          {genres?.length > 0 ? (
+            genres.map((genre) => (
               <button
-                key={genre._id}
+                key={genre._id || genre.id}
                 className="bg-teal-500 text-white py-2 px-4 m-2 rounded-lg 
                            hover:bg-teal-600 focus:outline-none focus:ring-2 
                            focus:ring-teal-500 focus:opacity-75"
@@ -101,20 +103,22 @@ const GenreList = () => {
               </button>
             ))
           ) : (
-            <p className="text-gray-500">No genres found.</p>
+            !isLoading && <p className="text-gray-500">No genres found.</p>
           )}
         </div>
 
         {/* Update & Delete Genre Modal */}
-        <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)}>
-          <GenreForm
-            value={updatingName}
-            setValue={setUpdatingName}
-            handleSubmit={handleUpdateGenre}
-            buttonText="Update Genre"
-            handleDelete={handleDeleteGenre}
-          />
-        </Modal>
+        {modalVisible && (
+          <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)}>
+            <GenreForm
+              value={updatingName}
+              setValue={setUpdatingName}
+              handleSubmit={handleUpdateGenre}
+              buttonText="Update Genre"
+              handleDelete={handleDeleteGenre}
+            />
+          </Modal>
+        )}
       </div>
     </div>
   );

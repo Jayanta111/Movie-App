@@ -31,7 +31,8 @@ export const genreApiSlice = apiSlice.injectEndpoints({
 
         // Fetch Genres (FIXED)
         fetchGenres: builder.query({
-            query: () => `${GENRE_URL}`, 
+            query: () => `${GENRE_URL}/genres`, 
+            method:"GET",
         }),
     }),
 });

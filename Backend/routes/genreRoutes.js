@@ -16,6 +16,6 @@ router.route("/")
 router.route("/:id")
   .put(authentication, authorizeAdmin, updateGenre);   // Route for updating a genre
 router.route("/:id").delete(authentication,authorizeAdmin,removeGenre);
-router.route("/genres").get(listGenres);
+router.route('/genres').get(listGenres);
 router.route('/:id').get(readGenre);
 export default router;

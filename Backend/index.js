@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Serve Static Files
-app.use("/uploads", express.static(path.join(_dirname, "uploads")));
+app.use("/uploads", express.static(path.join(_dirname +"/uploads")));
 
 // Routes
 app.use("/api/v1/users", userRoutes);

@@ -5,7 +5,6 @@ import fs from 'fs';
 
 const router = express.Router();
 
-// Ensure uploads folder exists
 const uploadDir = path.resolve('uploads');
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
@@ -14,7 +13,7 @@ if (!fs.existsSync(uploadDir)) {
 // Multer Storage Configuration
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "uploads/"); // Ensure this folder exists
+        cb(null, "uploads/"); 
     },
     filename: (req, file, cb) => {
         const extname = path.extname(file.originalname);
@@ -23,10 +22,11 @@ const storage = multer.diskStorage({
 });
 
 // File Filter for Images
-const filetypes = /\.(jpe?g|png|webp)$/i;
-const mimetypes = /image\/jpe?g|image\/png|image\/webp/;
 
 const fileFilter = (req, file, cb) => {
+    const filetypes = /\.(jpe?g|png|webp)$/i;
+const mimetypes = /image\/jpe?g|image\/png|image\/webp/;
+
     const extname = path.extname(file.originalname);
     const mimetype = file.mimetype;
     

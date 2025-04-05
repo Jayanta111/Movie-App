@@ -15,7 +15,7 @@ const movieSchema=new mongoose.Schema({
     image:{type:String},
     year:{type:Number,required:true},
     genre:{type:ObjectId,ref:"Genre" ,required:true},
-    details:{type:String,required:true} ,
+    detail:{type:String,required:true} ,
     cast:[{type:String}],
     reviews:[reviewSchema],
     numReviews:{type:Number,required:true,default:0},

@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useCreateMovieMutation, useUploadImageMutation } from '../../redux/api/movies';
-import { useFetchGenresQuery } from '../../redux/api/genre';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import {
+  useGetSpecificMovieQuery,
+  useUpdateMovieMutation,
+  useUploadImageMutation,
+  useDeleteMovieMutation,
+} from '../../redux/api/movies';
 import { toast } from 'react-toastify';
 
-const CreateMovie = () => {
+const UpdateMovie = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
+
   const [movieData, setMovieData] = useState({
     name: '',
     year: '',
@@ -16,33 +22,32 @@ const CreateMovie = () => {
     genre: '',
   });
   const [selectedImage, setSelectedImage] = useState(null);
-  const [createMovie, { isLoading: isCreatingMovie, error: createMovieError }] = useCreateMovieMutation();
-  const [uploadImage, { isLoading: isUploadingImage, error: uploadImageError }] = useUploadImageMutation();
-  const { data: genres, isLoading: isLoadingGenres } = useFetchGenresQuery();
+
+  const { data: initialMovieData, isLoading: isLoadingMovie } = useGetSpecificMovieQuery(id);
+  const [updateMovie, { isLoading: isUpdatingMovie }] = useUpdateMovieMutation();
+  const [uploadImage, { isLoading: isUploadingImage }] = useUploadImageMutation();
+  const [deleteMovie, { isLoading: isDeleteMovie }] = useDeleteMovieMutation();
 
   useEffect(() => {
-    if (Array.isArray(genres) && genres.length > 0) {
-      setMovieData((prevData) => ({
-        ...prevData,
-        genre: genres[0]?._id || '',
-      }));
+    if (initialMovieData) {
+      setMovieData({
+        name: initialMovieData.name,
+        year: initialMovieData.year,
+        detail: initialMovieData.detail, 
+        cast: initialMovieData.cast.join(', '), 
+        rating: initialMovieData.rating,
+        image: initialMovieData.image,
+        genre: initialMovieData.genre,
+      });
     }
-  }, [genres]);
+  }, [initialMovieData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'genre') {
-      const selectedGenre = genres?.find((genre) => genre._id === value);
-      setMovieData((prevData) => ({
-        ...prevData,
-        genre: selectedGenre ? selectedGenre._id : value,
-      }));
-    } else {
-      setMovieData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
+    setMovieData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleImageChange = (e) => {
@@ -56,29 +61,20 @@ const CreateMovie = () => {
     e.preventDefault();
 
     try {
-      if (!movieData.name || !movieData.year || !movieData.detail || !movieData.cast || !movieData.rating || !movieData.genre) {
-        toast.error('Please fill in all fields.');
-        return;
-      }
-
-      let uploadImagePath = null;
+      let uploadImagePath = movieData.image;
 
       if (selectedImage) {
         const formData = new FormData();
         formData.append('image', selectedImage);
 
-        console.log('Uploading image...'); // Debugging
         const uploadImageResponse = await uploadImage(formData).unwrap();
-        if (uploadImageResponse?.image) {
-          uploadImagePath = uploadImageResponse.image;
-        } else {
-          console.error('Uploaded image response:', uploadImageResponse);
-          toast.error('Failed to upload image.');
-          return;
+        if (!uploadImageResponse?.image) {
+          throw new Error('Image upload failed');
         }
+        uploadImagePath = uploadImageResponse.image;
       }
 
-      const movie = {
+      const updatedMovie = {
         ...movieData,
         image: uploadImagePath,
         year: Number(movieData.year),
@@ -86,21 +82,23 @@ const CreateMovie = () => {
         cast: movieData.cast.split(',').map((actor) => actor.trim()),
       };
 
-      console.log('Final Movie Data:', movie); // Debugging
-
-      await createMovie(movie).unwrap();
-      toast.success('Movie created successfully!');
+      await updateMovie({ id, updateMovie: updatedMovie }).unwrap();
+      toast.success('Movie updated successfully!');
       navigate('/admin/movies-list');
     } catch (error) {
       console.error('Error:', error);
-      toast.error(error?.data?.message || 'Failed to create movie.');
+      toast.error(error?.data?.message || 'Failed to update movie.');
     }
   };
+
+  if (isLoadingMovie) {
+    return <div>Loading movie data...</div>;
+  }
 
   return (
     <div className="container flex justify-center items-center mt-4">
       <form onSubmit={handleSubmit} className="w-[50rem] p-4 bg-gray-800 rounded-xl shadow-lg">
-        <h2 className="text-green-200 text-2xl mb-4">Create Movie</h2>
+        <h2 className="text-green-200 text-2xl mb-4">Update Movie</h2>
 
         <label className="text-green-200 mb-3">Movie Name</label>
         <input
@@ -153,26 +151,6 @@ const CreateMovie = () => {
           max="10"
         />
 
-        <label className="text-green-200 mb-3">Genres</label>
-        <select
-          name="genre"
-          value={movieData.genre}
-          onChange={handleChange}
-          className="mb-4 p-2 w-full"
-        >
-          {isLoadingGenres ? (
-            <option className="text-cyan-700">Loading genres...</option>
-          ) : genres && genres.length > 0 ? (
-            genres.map((genre) => (
-              <option key={genre._id} value={genre._id}>
-                {genre.name}
-              </option>
-            ))
-          ) : (
-            <option>No genres available</option>
-          )}
-        </select>
-
         <label className="text-green-200 mb-3">Upload Image</label>
         <input
           type="file"
@@ -180,6 +158,14 @@ const CreateMovie = () => {
           onChange={handleImageChange}
           className="mb-4 p-2 w-full"
         />
+
+        {movieData.image && !selectedImage && (
+          <img
+            src={movieData.image}
+            alt="Current Movie"
+            className="h-40 mb-4 rounded-md"
+          />
+        )}
 
         {selectedImage && (
           <img
@@ -192,16 +178,15 @@ const CreateMovie = () => {
         <button
           type="submit"
           className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 disabled:opacity-50"
-          disabled={isCreatingMovie || isUploadingImage}
+          disabled={isUpdatingMovie || isUploadingImage || isDeleteMovie}
         >
-          {isCreatingMovie || isUploadingImage ? 'Submitting...' : 'Create Movie'}
+          {isUpdatingMovie || isUploadingImage || isDeleteMovie
+            ? 'Updating...'
+            : 'Update Movie'}
         </button>
-
-        {createMovieError && <p className="text-red-500 mt-2">Failed to create movie.</p>}
-        {uploadImageError && <p className="text-red-500 mt-2">Failed to upload image.</p>}
       </form>
     </div>
   );
 };
 
-export default CreateMovie;
+export default UpdateMovie;

@@ -80,6 +80,7 @@ export const moviesApiSlice = apiSlice.injectEndpoints({
       query: () => `${MOVIE_URL}/random-movies`,
     }),
   }),
+  
 });
 
 // Export hooks for usage in functional components

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../../component/Loader";  // Assuming you have this loader component
+import Loader from "../../component/Loader";  
 import { setCredentials } from "../../redux/features/auth/authSlice";
 import { useLoginMutation } from "../../redux/api/user";
 import { useLogoutMutation } from "../../redux/api/user";
@@ -51,7 +51,7 @@ const Login = () => {
                 className="mt-1 p-2 border rounded w-full"
                 placeholder="Enter Your Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)} // Fixed onClick to onChange
+                onChange={(e) => setEmail(e.target.value)} 
               />
             </div>
             <div className="my-[2rem]">
@@ -64,7 +64,7 @@ const Login = () => {
                 className="mt-1 p-2 border rounded w-full"
                 placeholder="Enter Your Password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)} // Fixed onClick to onChange
+                onChange={(e) => setPassword(e.target.value)} 
               />
             </div>
             <button
@@ -79,7 +79,7 @@ const Login = () => {
               <p className="text-white">
                 New User?{" "}
                 <Link
-                  to={redirect ? `/register?redirect=${redirect}` : "/register"} // Fixed template literal
+                  to={redirect ? `/register?redirect=${redirect}` : "/register"} 
                   className="text-teal-500 hover:underline"
                 >
                   Register

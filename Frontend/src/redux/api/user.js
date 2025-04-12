@@ -7,7 +7,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}/auth`, // ✅ Fixed template literal
+        url: `${USERS_URL}/auth`,
         method: "POST",
         body: data,
       }),
@@ -15,7 +15,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
 
     register: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}`, // ✅ Fixed template literal
+        url: `${USERS_URL}`, 
         method: "POST",
         body: data,
       }),
@@ -23,14 +23,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
 
     logout: builder.mutation({
       query: () => ({
-        url: `${USERS_URL}/logout`, // ✅ Fixed template literal
+        url: `${USERS_URL}/logout`, 
         method: "POST",
       }),
     }),
 
-    profile: builder.mutation({ // ✅ Fixed space issue
+    profile: builder.mutation({ 
       query: (data) => ({
-        url: `${USERS_URL}/profile`, // ✅ Fixed template literal
+        url: `${USERS_URL}/profile`, 
         method: "PUT",
         body: data,
       }),

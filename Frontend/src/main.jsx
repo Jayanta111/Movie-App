@@ -17,6 +17,8 @@ import GenreList from "./pages/Admin/GenreList.jsx";
 import CreateMovie from "./pages/Admin/CreateMovie.jsx";
 import AdminMovieList from "./pages/Admin/AdminMovieList.jsx";
 import UpdateMovie from "./pages/Admin/UpdateMovie.jsx";
+import AllMovies from "./pages/Movies/AllMovies.jsx";
+import MovieDetails from "./pages/Movies/MovieDetails.jsx";
 // Define Routes
 const router = createBrowserRouter(
   [
@@ -68,6 +70,15 @@ const router = createBrowserRouter(
               path: "/admin/movies/update/:id",
               element: <UpdateMovie />,
             },
+            {
+              path: "/movies",
+              element: <AllMovies/>,
+            },
+            {
+              path: "/movies/:id",
+              element: <MovieDetails/>,
+            },
+            
           ],
         },
       ],

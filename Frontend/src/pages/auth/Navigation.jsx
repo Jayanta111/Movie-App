@@ -24,17 +24,16 @@ const Navigation = () => {
 
   const logoutHandler = async () => {
     try {
-      console.log("Logging out..."); // Debugging: Check if function runs
+      console.log("Logging out..."); 
       await logoutApiCall().unwrap();
       
       dispatch(logout());
       
-      // Clear local storage and refresh to reset state
       localStorage.clear();
       sessionStorage.clear();
       
       navigate("/login");
-      window.location.reload(); // Ensure complete re-render
+      window.location.reload(); 
     } catch (error) {
       console.error("Logout failed:", error);
     }

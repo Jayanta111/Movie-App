@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
 import User from '../modules/user.js';
 import asyncHandler from './asyncHandler.js';
+import dotenv from "dotenv";
 
-// Check Auth
+dotenv.config();// Check Auth
 const authentication = asyncHandler(async (req, res, next) => {
   let token = req.cookies.jwt;
 

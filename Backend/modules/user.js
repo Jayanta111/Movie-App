@@ -9,7 +9,7 @@ const userSchema = mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true,  // email should be unique
+    unique: true,  
   },
   password: {
     type: String,
@@ -18,9 +18,9 @@ const userSchema = mongoose.Schema({
   isAdmin: {
     type: Boolean,
     required: true,
-    default: false // Default is false for new users
+    default: false 
   },
-}, { timestamps: true });  // Automatically add createdAt and updatedAt fields
+}, { timestamps: true });  
 
 // Create model
 const User = mongoose.model("User", userSchema);

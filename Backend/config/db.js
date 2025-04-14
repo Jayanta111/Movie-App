@@ -5,7 +5,7 @@ const connectDB = async () => {
     await mongoose.connect(process.env.MONGO_URL);
     console.log('Successfully connected to Mongo');
   } catch (error) {
-    console.error(`Error: ${error.message}`);  // Fixed string interpolation here
+    console.error(`Error: ${error.message}`);  
     process.exit(1);
   }
 }
